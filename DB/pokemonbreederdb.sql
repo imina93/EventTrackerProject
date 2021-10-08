@@ -44,7 +44,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `pokemonbreederdb`;
 INSERT INTO `pokemon` (`id`, `name`, `nature`) VALUES (1, 'Charmander', 'Modest');
-INSERT INTO `pokemon` (`id`, `name`, `nature`) VALUES (DEFAULT, 'Gyarados', 'Adamant');
+INSERT INTO `pokemon` (`id`, `name`, `nature`) VALUES (2, 'Gyarados', 'Adamant');
 
 COMMIT;
 
