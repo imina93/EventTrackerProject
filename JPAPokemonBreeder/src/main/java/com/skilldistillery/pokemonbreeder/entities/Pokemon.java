@@ -2,6 +2,7 @@ package com.skilldistillery.pokemonbreeder.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,12 +17,21 @@ public class Pokemon {
 
 	private String name;
 	private String nature;
+	private String ability;
+	@Column(name="iv_spread")
+	private String ivSpread;
+	private String notes;
 
-	public Pokemon(int id, String name, String nature) {
+	
+
+	public Pokemon(int id, String name, String nature, String ability, String ivSpread, String notes) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.nature = nature;
+		this.ability = ability;
+		this.ivSpread = ivSpread;
+		this.notes = notes;
 	}
 
 	public Pokemon() {
@@ -51,6 +61,31 @@ public class Pokemon {
 	public void setNature(String nature) {
 		this.nature = nature;
 	}
+	
+
+	public String getAbility() {
+		return ability;
+	}
+
+	public void setAbility(String ability) {
+		this.ability = ability;
+	}
+
+	public String getIvSpread() {
+		return ivSpread;
+	}
+
+	public void setIvSpread(String ivSpread) {
+		this.ivSpread = ivSpread;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 
 	@Override
 	public String toString() {
@@ -61,6 +96,12 @@ public class Pokemon {
 		builder.append(name);
 		builder.append(", nature=");
 		builder.append(nature);
+		builder.append(", ability=");
+		builder.append(ability);
+		builder.append(", ivSpread=");
+		builder.append(ivSpread);
+		builder.append(", notes=");
+		builder.append(notes);
 		builder.append("]");
 		return builder.toString();
 	}
