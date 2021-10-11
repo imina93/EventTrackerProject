@@ -47,5 +47,12 @@ class TrainerTest {
 		assertNotNull(trainer);
 		assertEquals("admin", trainer.getName());
 	}
+	
+	@Test 
+	void test_trainer_pokemon_relationship_mapping() {
+		assertNotNull(trainer);
+		assertTrue(trainer.getRegisteredPokemon().size() > 0);
+		
+	}
 
 }

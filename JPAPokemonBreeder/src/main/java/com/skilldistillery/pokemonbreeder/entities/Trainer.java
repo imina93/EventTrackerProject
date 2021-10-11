@@ -1,11 +1,15 @@
 package com.skilldistillery.pokemonbreeder.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Trainer {
@@ -15,6 +19,10 @@ public class Trainer {
 	private int id;
 
 	private String name;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "trainer")
+	private List<Pokemon> registeredPokemon;
 
 	
 	public Trainer(int id, String name) {
@@ -25,6 +33,14 @@ public class Trainer {
 
 	public Trainer() {
 		super();
+	}
+
+	public List<Pokemon> getRegisteredPokemon() {
+		return registeredPokemon;
+	}
+
+	public void setRegisteredPokemon(List<Pokemon> registeredPokemon) {
+		this.registeredPokemon = registeredPokemon;
 	}
 
 	public int getId() {

@@ -7,9 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Pokemon {
+
+	public Trainer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Trainer trainer) {
+		this.trainer = trainer;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +31,10 @@ public class Pokemon {
 	@Column(name="iv_spread")
 	private String ivSpread;
 	private String notes;
+	
+	@ManyToOne()
+	@JoinColumn(name = "trainer_id")
+	private Trainer trainer;
 
 	
 

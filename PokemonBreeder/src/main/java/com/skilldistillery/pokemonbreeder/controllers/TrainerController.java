@@ -16,79 +16,79 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.skilldistillery.pokemonbreeder.entities.Pokemon;
-import com.skilldistillery.pokemonbreeder.services.PokemonService;
+import com.skilldistillery.pokemonbreeder.entities.Trainer;
+import com.skilldistillery.pokemonbreeder.services.TrainerService;
 
 @RestController
 @RequestMapping("api")
-public class PokemonController {
-
+public class TrainerController {
 	@Autowired
-	private PokemonService pokemonSvc;
-
-	@GetMapping("pokemon")
-	public List<Pokemon> pokemonIndex() {
-		return pokemonSvc.getAllPokemon();
+	private TrainerService trainerSvc;
+	
+	
+	@GetMapping("trainer")
+	public List<Trainer> trainerIndex() {
+		return trainerSvc.getAllTrainers();
 	}
 	
 	
 
-	@PostMapping("pokemon")
-	public Pokemon addPokemon(
-			@RequestBody Pokemon pokemon,
+	@PostMapping("trainer")
+	public Trainer addTrainer(
+			@RequestBody Trainer trainer,
 			HttpServletRequest req,
 			HttpServletResponse res
 			) {
 		try {
-			pokemonSvc.addPokemon(pokemon);
+			trainerSvc.addTrainer(trainer);
 			StringBuffer url = req.getRequestURL();
-			url.append("/").append(pokemon.getId());
+			url.append("/").append(trainer.getId());
 			res.setHeader("Location", url.toString());
 		} catch (Exception e) {
 			System.err.println(e);
 			res.setStatus(400);
-			pokemon = null;
+			trainer = null;
 		}
-		return pokemon;
+		return trainer;
 	}
 	
 	
-	@GetMapping("pokemon/{id}")
-	public Optional<Pokemon> showPokemon(
+	@GetMapping("trainer/{id}")
+	public Optional<Trainer> showTrainer(
 			@PathVariable Integer id,
 			HttpServletResponse res) {
-		Optional<Pokemon> pokemon = pokemonSvc.findById(id);
-		if (pokemon == null) {
+		Optional<Trainer> trainer = trainerSvc.findById(id);
+		if (trainer == null) {
 			res.setStatus(404);
 		}
-		return pokemon;
+		return trainer;
 	}
 	
 	
-	@PutMapping("pokemon/{id}")
-	public Optional<Pokemon> updatePokemon(
+	@PutMapping("trainer/{id}")
+	public Optional<Trainer> updateTrainer(
 			@PathVariable Integer id,
-			@RequestBody Optional<Pokemon> pokemon,
+			@RequestBody Optional<Trainer> trainer,
 			HttpServletResponse res) {
 		try {
-			pokemon = pokemonSvc.updatePokemon(id, pokemon);
-			if (pokemon == null) {
+			trainer = trainerSvc.updateTrainer(id, trainer);
+			if (trainer == null) {
 				res.setStatus(400);
 			}
 		} catch (Exception e) {
 			System.err.println(e);
 			res.setStatus(400);
-			pokemon = null;
-		} return pokemon;
+			trainer = null;
+		} return trainer;
 	}
 	
 	
-	@DeleteMapping("pokemon/{id}")
-	public void deletePokemon(@PathVariable Integer id,
+	@DeleteMapping("trainer/{id}")
+	public void deleteTrainer(@PathVariable Integer id,
 			HttpServletResponse res
 			) {
 			try {
-				pokemonSvc.deletePokemon(id);
+				trainerSvc.deleteTrainer(id);
 				res.setStatus(204);
 			} catch (Exception e) {
 				System.err.println(e);

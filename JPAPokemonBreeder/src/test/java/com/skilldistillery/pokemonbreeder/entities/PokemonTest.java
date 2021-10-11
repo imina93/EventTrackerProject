@@ -48,5 +48,12 @@ class PokemonTest {
 		assertNotNull(pokemon);
 		assertEquals("Charmander", pokemon.getName());
 	}
+	
+	@Test
+	void test_pokemon_trainer_relationship_mapping() {
+		assertNotNull(pokemon);
+		assertEquals("admin", pokemon.getTrainer().getName());
+		
+	}
 
 }
