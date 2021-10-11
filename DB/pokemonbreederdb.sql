@@ -16,6 +16,18 @@ CREATE SCHEMA IF NOT EXISTS `pokemonbreederdb` DEFAULT CHARACTER SET utf8 ;
 USE `pokemonbreederdb` ;
 
 -- -----------------------------------------------------
+-- Table `trainer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `trainer` ;
+
+CREATE TABLE IF NOT EXISTS `trainer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `pokemon`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `pokemon` ;
@@ -27,19 +39,14 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
   `ability` VARCHAR(45) NULL,
   `iv_spread` VARCHAR(45) NULL,
   `notes` VARCHAR(500) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `trainer`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `trainer` ;
-
-CREATE TABLE IF NOT EXISTS `trainer` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `trainer_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `trainer_id`),
+  INDEX `fk_pokemon_trainer_idx` (`trainer_id` ASC),
+  CONSTRAINT `fk_pokemon_trainer`
+    FOREIGN KEY (`trainer_id`)
+    REFERENCES `trainer` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 SET SQL_MODE = '';
@@ -54,22 +61,22 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `pokemon`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `pokemonbreederdb`;
-INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`) VALUES (1, 'Charmander', 'Modest', 'Solar Power', NULL, NULL);
-INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`) VALUES (2, 'Gyarados', 'Adamant', 'Moxie', NULL, NULL);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `trainer`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `pokemonbreederdb`;
 INSERT INTO `trainer` (`id`, `name`) VALUES (1, 'admin');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `pokemon`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `pokemonbreederdb`;
+INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`, `trainer_id`) VALUES (1, 'Charmander', 'Modest', 'Solar Power', NULL, NULL, 1);
+INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`, `trainer_id`) VALUES (2, 'Gyarados', 'Adamant', 'Moxie', NULL, NULL, 1);
 
 COMMIT;
 
