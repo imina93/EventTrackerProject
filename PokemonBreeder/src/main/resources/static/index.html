@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pokemon Breeder</title>
+<script src="js/script.js"></script>
+</head>
+<body>
+
+<h1>Pokemon Breeder Tracker</h1>
+<hr>
+
+<form name = "pokemonForm">
+<input type="number" name ="pokemonId">
+<button name="lookup">Get Pokemon by Id</button>
+</form>
+
+
+
+<div>
+    <form name="addPokemonForm">
+    <input type ="text" name="name" placeholder="Pokemon Name"> <br>
+    <input type ="text" name="nature" placeholder="Nature"> <br>
+    <input type ="text" name="ability" placeholder="Ability"> <br>
+    <input type ="text" name="ivSpread" placeholder="IV Spread #/#/#/#/#/"> <br>
+    <textarea rows="3" cols="40" name="notes" placeholder="Notes"></textarea> <br>
+    <button name="addPokemon">Add Pokemon</button>
+
+    </form>
+</div>
+
+<div id="pokemonData"></div>
+
+
+
+<!-- TODO -->
+</body>
+</html>
