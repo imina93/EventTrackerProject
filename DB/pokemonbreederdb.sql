@@ -77,6 +77,7 @@ START TRANSACTION;
 USE `pokemonbreederdb`;
 INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`, `trainer_id`) VALUES (1, 'Charmander', 'Modest', 'Solar Power', NULL, NULL, 1);
 INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`, `trainer_id`) VALUES (2, 'Gyarados', 'Adamant', 'Moxie', NULL, NULL, 1);
+INSERT INTO `pokemon` (`id`, `name`, `nature`, `ability`, `iv_spread`, `notes`, `trainer_id`) VALUES (3, 'Nidoking', 'Modest', 'Sheer Force', '31/0/31/31/31/31', 'The ability is hidden.', 1);
 
 COMMIT;
 
