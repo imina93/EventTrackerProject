@@ -109,6 +109,7 @@ function postNewPokemon(){
 
 function displayPokemon(pokemon){
 	var pokemonDiv = document.getElementById('pokemonData');
+	pokemonDiv.style.backgroundColor = 'rgb(220,220,220)';
 	pokemonDiv.textContent = '';
 	let h1 = document.createElement('h1');
 	h1.textContent = pokemon.name;
