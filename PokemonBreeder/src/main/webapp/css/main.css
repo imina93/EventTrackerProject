@@ -1,6 +1,12 @@
 body {
-background-image: url("https://wallpapercave.com/wp/KJCEdpF.png");
+background-image: url("https://images6.fanpop.com/image/photos/41000000/KaqPOOq-pokemon-41027260-1920-1080.jpg");
 background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
+background-attachment: fixed;
+}
+
+#pokemonData {
+	height: 100%;
+ 	max-width: 40%;
 }

@@ -180,7 +180,6 @@ function updatePokemon(pokemonId) {
 			id: 1
 		}
 	};
-	console.log(pokemon);
 	console.log("Updated object   " + document.addPokemonForm.name.value);
 	var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
 	xhr.send(pokemonJson);
