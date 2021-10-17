@@ -8,29 +8,45 @@ function init() {
 		event.preventDefault();
 		var pokemonId = document.pokemonForm.pokemonId.value;
 		if (!isNaN(pokemonId) && pokemonId > 0) {
-			getPokemon(pokemonId);
+			getPokemonById(pokemonId);
 		}
 	})
 	
-	
 	document.addPokemonForm.addPokemon.addEventListener('click', function(event){
 		event.preventDefault();
-		let pokeForm = document.addPokemonForm;
-		let newPokemon = {
-			name: pokeForm.name.value,
-			nature: pokeForm.nature.value,
-			ability: pokeForm.ability.value,
-			ivSpread: pokeForm.ivSpread.value,
-			notes: pokeForm.notes.value
-		};
-		console.log(newPokemon);
-		postNewPokemon(newPokemon);
-		
+		postNewPokemon();	
 	});
 }
 
-function getPokemon(pokemonId) {
-	console.log('getPokemon(): pokemonId is ' + pokemonId);
+function getPokemon() {
+
+  console.log("got to getPokemon");
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.open('GET', 'api/pokemon/');
+
+  xhr.onreadystatechange = function() {
+    if (xhr.status < 400 && xhr.readyState === 4) {
+      // convert responseText to JSON
+      let pokemon = JSON.parse(xhr.responseText);
+
+      // print out JSON data
+      console.log(data[0].id);
+      displayPokemon(pokemon);
+
+
+    } else if (xhr.readyState === 4 && xhr.status >= 400) {
+      console.error('Pokemon not found');
+    }
+  };
+
+  xhr.send(null);
+
+}
+
+function getPokemonById(pokemonId) {
+	console.log('getPokemonById(): pokemonId is ' + pokemonId);
 	let xhr = new XMLHttpRequest();
 	console.log('xhr.readyState = ' + xhr.readyState);
 	xhr.open('GET', 'api/pokemon/' + pokemonId);
@@ -54,23 +70,42 @@ function getPokemon(pokemonId) {
 	console.log('After Send : xhr.readyState = ' + xhr.readyState);
 }
 
-function postNewPokemon(newPokemon){
-	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'api/pokemon');
+function postNewPokemon(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'api/pokemon/', true);
+	xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4) {
 			if (xhr.status === 200 || xhr.status === 201) {
 				let pokemon = JSON.parse(xhr.responseText);
-				displayPokemon(pokemon);
-			}
+				getPokemon();
+				console.log("Pokemon added");
+				alert("Pokemon Added"); 
+				} else {
+			document.getElementById('pokemonData').textContent = 'Pokemon Not Found';
+        	console.log(xhr.responseText);
 		}
-		else {
-			// TODO
+		}
+	};
+	
+	var pokemon = {
+			name: document.addPokemonForm.name.value,
+			nature: document.addPokemonForm.nature.value,
+			ability: document.addPokemonForm.ability.value,
+			ivSpread: document.addPokemonForm.ivSpread.value,
+			notes: document.addPokemonForm.notes.value,
+			// Hardcoded admin as default trainer.
+			trainer: {
+				id: 1
+			}
 		};
-	}
-	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.send(JSON.stringify(newPokemon));
+			console.log(pokemon);
+			console.log("test object added   " + document.addPokemonForm.name.value);
+	 var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
+	 		xhr.send(pokemonJson);
+	 		document.addPokemonForm.reset();
 }
+
 
 function displayPokemon(pokemon){
 	var pokemonDiv = document.getElementById('pokemonData');
@@ -93,4 +128,3 @@ function displayPokemon(pokemon){
 	li.textContent = "IV Spread: " + pokemon.ivSpread;
 	ul.appendChild(li);
 }
-
