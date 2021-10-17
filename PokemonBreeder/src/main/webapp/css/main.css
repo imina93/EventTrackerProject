@@ -10,3 +10,7 @@ background-attachment: fixed;
 	height: 100%;
  	max-width: 40%;
 }
+
+h1 {
+	color: white;
+}
