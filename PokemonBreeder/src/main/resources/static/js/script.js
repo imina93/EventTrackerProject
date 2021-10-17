@@ -30,9 +30,7 @@ function getPokemon() {
     if (xhr.status < 400 && xhr.readyState === 4) {
       // convert responseText to JSON
       let pokemon = JSON.parse(xhr.responseText);
-
       // print out JSON data
-      console.log(data[0].id);
       displayPokemon(pokemon);
 
 
@@ -104,6 +102,7 @@ function postNewPokemon(){
 	 var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
 	 		xhr.send(pokemonJson);
 	 		document.addPokemonForm.reset();
+	 		displayPokemon(pokemon);
 }
 
 
@@ -119,13 +118,98 @@ function displayPokemon(pokemon){
 	pokemonDiv.appendChild(bq);	
 	let ul = document.createElement('ul');
 	pokemonDiv.appendChild(ul);
-	let li = document.createElement('li');
-	li.textContent = "Nature: " + pokemon.nature;
-	ul.appendChild(li);
-	li = document.createElement('li');
-	li.textContent = "Ability: " + pokemon.ability;
-	ul.appendChild(li);
-	li = document.createElement('li');
-	li.textContent = "IV Spread: " + pokemon.ivSpread;
-	ul.appendChild(li);
+	let liNature = document.createElement('li');
+	liNature.textContent = "Nature: " + pokemon.nature;
+	ul.appendChild(liNature);
+	let liAbility = document.createElement('li');
+	liAbility.textContent = "Ability: " + pokemon.ability;
+	ul.appendChild(liAbility);
+	let liIvs = document.createElement('li');
+	liIvs.textContent = "IV Spread: " + pokemon.ivSpread;
+	ul.appendChild(liIvs);		
+	let deleteButton = document.createElement('button');
+	deleteButton.textContent = 'Delete';
+	deleteButton.addEventListener('click', function(e){
+		deletePokemon(pokemon.id);
+	
+	});
+	pokemonDiv.appendChild(deleteButton);
+	let updateButton = document.createElement('button');
+	updateButton.textContent = 'Edit Information';
+	updateButton.addEventListener('click', function(e){
+		updatePokemon(pokemon.id);
+	
+	});
+	pokemonDiv.appendChild(updateButton);
+}
+
+function updatePokemon(pokemonId) {
+  // e.preventDefault();
+  var xhr = new XMLHttpRequest();
+  xhr.open('PUT', 'api/pokemon/' + pokemonId, true);
+
+  xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status == 200 || xhr.status == 201) { // Ok or Created
+        let pokemon = JSON.parse(xhr.responseText);
+        getPokemon();
+        console.log("Pokemon updated");
+        alert("Pokemon updated");
+      } else {
+
+        document.getElementById('pokemonData').textContent = 'Pokemon Could Not Be Updated';
+        console.log(xhr.responseText);
+      }
+    }
+  };
+
+
+var pokemon = {
+			name: document.addPokemonForm.name.value,
+			nature: document.addPokemonForm.nature.value,
+			ability: document.addPokemonForm.ability.value,
+			ivSpread: document.addPokemonForm.ivSpread.value,
+			notes: document.addPokemonForm.notes.value,
+			// Hardcoded admin as default trainer.
+			trainer: {
+				id: 1
+			}
+		};
+
+  
+  console.log(pokemon);
+  console.log("Updated object   " + document.addPokemonForm.name.value);
+	 var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
+	 		xhr.send(pokemonJson);
+	 		document.pokemonForm.reset();
+	 		displayPokemon(pokemon);
+}
+
+function deletePokemon(pokemonId) {
+  // e.preventDefault();
+  var xhr = new XMLHttpRequest();
+  xhr.open('DELETE', 'api/pokemon/' + pokemonId, true);
+
+  xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
+
+  xhr.onreadystatechange = function() {
+
+    if (xhr.readyState === 4 && xhr.status === 204) { // Ok or Created
+
+      getPokemon();
+      console.log("Pokemon deleted");
+      alert("Pokemon deleted");
+    }
+    if (xhr.readyState === 4 && xhr.status >= 400) {
+      console.error('ERROR: ' + xhr.status + ': ' + xhr.responseText);
+    }
+
+  };
+
+  xhr.send();
+
+  document.pokemonForm.reset();
+
 }
