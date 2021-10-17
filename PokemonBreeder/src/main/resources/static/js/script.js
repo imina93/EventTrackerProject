@@ -1,45 +1,45 @@
-window.addEventListener('load', function(e){
+window.addEventListener('load', function(e) {
 	console.log('script.js loaded')
 	init();
 });
 
 function init() {
-	document.pokemonForm.lookup.addEventListener('click', function(event){
+	document.pokemonForm.lookup.addEventListener('click', function(event) {
 		event.preventDefault();
 		var pokemonId = document.pokemonForm.pokemonId.value;
 		if (!isNaN(pokemonId) && pokemonId > 0) {
 			getPokemonById(pokemonId);
 		}
 	})
-	
-	document.addPokemonForm.addPokemon.addEventListener('click', function(event){
+
+	document.addPokemonForm.addPokemon.addEventListener('click', function(event) {
 		event.preventDefault();
-		postNewPokemon();	
+		postNewPokemon();
 	});
 }
 
 function getPokemon() {
 
-  console.log("got to getPokemon");
+	console.log("got to getPokemon");
 
-  var xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 
-  xhr.open('GET', 'api/pokemon/');
+	xhr.open('GET', 'api/pokemon/');
 
-  xhr.onreadystatechange = function() {
-    if (xhr.status < 400 && xhr.readyState === 4) {
-      // convert responseText to JSON
-      let pokemon = JSON.parse(xhr.responseText);
-      // print out JSON data
-      displayPokemon(pokemon);
+	xhr.onreadystatechange = function() {
+		if (xhr.status < 400 && xhr.readyState === 4) {
+			// convert responseText to JSON
+			let pokemon = JSON.parse(xhr.responseText);
+			// print out JSON data
+			displayPokemon(pokemon);
 
 
-    } else if (xhr.readyState === 4 && xhr.status >= 400) {
-      console.error('Pokemon not found');
-    }
-  };
+		} else if (xhr.readyState === 4 && xhr.status >= 400) {
+			console.error('Pokemon not found');
+		}
+	};
 
-  xhr.send(null);
+	xhr.send(null);
 
 }
 
@@ -49,7 +49,7 @@ function getPokemonById(pokemonId) {
 	console.log('xhr.readyState = ' + xhr.readyState);
 	xhr.open('GET', 'api/pokemon/' + pokemonId);
 	console.log('xhr.readyState = ' + xhr.readyState);
-	xhr.onreadystatechange = function(){
+	xhr.onreadystatechange = function() {
 		console.log('xhr.readyState = ' + xhr.readyState);
 		if (xhr.readyState === 4) {
 			if (xhr.status === 200) {
@@ -59,7 +59,7 @@ function getPokemonById(pokemonId) {
 				console.log(pokemon);
 				displayPokemon(pokemon);
 			} else {
-				
+
 			}
 		}
 	}
@@ -68,45 +68,44 @@ function getPokemonById(pokemonId) {
 	console.log('After Send : xhr.readyState = ' + xhr.readyState);
 }
 
-function postNewPokemon(){
+function postNewPokemon() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', 'api/pokemon/', true);
 	xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
-	xhr.onreadystatechange = function () {
+	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
 			if (xhr.status === 200 || xhr.status === 201) {
-				let pokemon = JSON.parse(xhr.responseText);
 				getPokemon();
 				console.log("Pokemon added");
-				alert("Pokemon Added"); 
-				} else {
-			document.getElementById('pokemonData').textContent = 'Pokemon Not Found';
-        	console.log(xhr.responseText);
-		}
+				alert("Pokemon Added");
+			} else {
+				document.getElementById('pokemonData').textContent = 'Pokemon Not Found';
+				console.log(xhr.responseText);
+			}
 		}
 	};
-	
+
 	var pokemon = {
-			name: document.addPokemonForm.name.value,
-			nature: document.addPokemonForm.nature.value,
-			ability: document.addPokemonForm.ability.value,
-			ivSpread: document.addPokemonForm.ivSpread.value,
-			notes: document.addPokemonForm.notes.value,
-			// Hardcoded admin as default trainer.
-			trainer: {
-				id: 1
-			}
-		};
-			console.log(pokemon);
-			console.log("test object added   " + document.addPokemonForm.name.value);
-	 var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
-	 		xhr.send(pokemonJson);
-	 		document.addPokemonForm.reset();
-	 		displayPokemon(pokemon);
+		name: document.addPokemonForm.name.value,
+		nature: document.addPokemonForm.nature.value,
+		ability: document.addPokemonForm.ability.value,
+		ivSpread: document.addPokemonForm.ivSpread.value,
+		notes: document.addPokemonForm.notes.value,
+		// Hardcoded admin as default trainer.
+		trainer: {
+			id: 1
+		}
+	};
+	console.log(pokemon);
+	console.log("test object added   " + document.addPokemonForm.name.value);
+	var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
+	xhr.send(pokemonJson);
+	document.addPokemonForm.reset();
+	displayPokemon(pokemon);
 }
 
 
-function displayPokemon(pokemon){
+function displayPokemon(pokemon) {
 	var pokemonDiv = document.getElementById('pokemonData');
 	pokemonDiv.style.backgroundColor = 'rgb(220,220,220)';
 	pokemonDiv.textContent = '';
@@ -115,7 +114,7 @@ function displayPokemon(pokemon){
 	pokemonDiv.appendChild(h1);
 	let bq = document.createElement('blockquote')
 	bq.textContent = pokemon.notes;
-	pokemonDiv.appendChild(bq);	
+	pokemonDiv.appendChild(bq);
 	let ul = document.createElement('ul');
 	pokemonDiv.appendChild(ul);
 	let liNature = document.createElement('li');
@@ -126,90 +125,92 @@ function displayPokemon(pokemon){
 	ul.appendChild(liAbility);
 	let liIvs = document.createElement('li');
 	liIvs.textContent = "IV Spread: " + pokemon.ivSpread;
-	ul.appendChild(liIvs);		
+	ul.appendChild(liIvs);
 	let deleteButton = document.createElement('button');
 	deleteButton.textContent = 'Delete';
-	deleteButton.addEventListener('click', function(e){
+	deleteButton.addEventListener('click', function(e) {
 		deletePokemon(pokemon.id);
-	
+
 	});
 	pokemonDiv.appendChild(deleteButton);
 	let updateButton = document.createElement('button');
 	updateButton.textContent = 'Edit Information';
-	updateButton.addEventListener('click', function(e){
+	updateButton.addEventListener('click', function(e) {
 		updatePokemon(pokemon.id);
-	
+
 	});
 	pokemonDiv.appendChild(updateButton);
+	document.addPokemonForm.name.value = pokemon.name;
+	document.addPokemonForm.nature.value = pokemon.nature;
+	document.addPokemonForm.ability.value = pokemon.ability;
+	document.addPokemonForm.notes.value = pokemon.notes;
+	document.addPokemonForm.ivSpread.value = pokemon.ivSpread;
+
 }
 
 function updatePokemon(pokemonId) {
-  // e.preventDefault();
-  var xhr = new XMLHttpRequest();
-  xhr.open('PUT', 'api/pokemon/' + pokemonId, true);
+	// e.preventDefault();
+	var xhr = new XMLHttpRequest();
+	xhr.open('PUT', 'api/pokemon/' + pokemonId, true);
 
-  xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
+	xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
 
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      if (xhr.status == 200 || xhr.status == 201) { // Ok or Created
-        let pokemon = JSON.parse(xhr.responseText);
-        getPokemon();
-        console.log("Pokemon updated");
-        alert("Pokemon updated");
-      } else {
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			if (xhr.status == 200 || xhr.status == 201) { // Ok or Created
+				getPokemon();
+				console.log("Pokemon updated");
+				alert("Pokemon updated");
+			} else {
 
-        document.getElementById('pokemonData').textContent = 'Pokemon Could Not Be Updated';
-        console.log(xhr.responseText);
-      }
-    }
-  };
-
-
-var pokemon = {
-			name: document.addPokemonForm.name.value,
-			nature: document.addPokemonForm.nature.value,
-			ability: document.addPokemonForm.ability.value,
-			ivSpread: document.addPokemonForm.ivSpread.value,
-			notes: document.addPokemonForm.notes.value,
-			// Hardcoded admin as default trainer.
-			trainer: {
-				id: 1
+				document.getElementById('pokemonData').textContent = 'Pokemon Could Not Be Updated';
+				console.log(xhr.responseText);
 			}
-		};
-
-  
-  console.log(pokemon);
-  console.log("Updated object   " + document.addPokemonForm.name.value);
-	 var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
-	 		xhr.send(pokemonJson);
-	 		document.pokemonForm.reset();
-	 		displayPokemon(pokemon);
+		}
+	};
+	var pokemon = {
+		id: document.pokemonForm.id.value,
+		name: document.addPokemonForm.name.value,
+		nature: document.addPokemonForm.nature.value,
+		ability: document.addPokemonForm.ability.value,
+		ivSpread: document.addPokemonForm.ivSpread.value,
+		notes: document.addPokemonForm.notes.value,
+		// Hardcoded admin as default trainer.
+		trainer: {
+			id: 1
+		}
+	};
+	console.log(pokemon);
+	console.log("Updated object   " + document.addPokemonForm.name.value);
+	var pokemonJson = JSON.stringify(pokemon); // Convert JS object to JSON string
+	xhr.send(pokemonJson);
+	document.pokemonForm.reset();
+	displayPokemon(pokemon);
 }
 
 function deletePokemon(pokemonId) {
-  // e.preventDefault();
-  var xhr = new XMLHttpRequest();
-  xhr.open('DELETE', 'api/pokemon/' + pokemonId, true);
+	// e.preventDefault();
+	var xhr = new XMLHttpRequest();
+	xhr.open('DELETE', 'api/pokemon/' + pokemonId, true);
 
-  xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
+	xhr.setRequestHeader("Content-type", "application/json"); // Specify JSON request body
 
-  xhr.onreadystatechange = function() {
+	xhr.onreadystatechange = function() {
 
-    if (xhr.readyState === 4 && xhr.status === 204) { // Ok or Created
+		if (xhr.readyState === 4 && xhr.status === 204) { // Ok or Created
 
-      getPokemon();
-      console.log("Pokemon deleted");
-      alert("Pokemon deleted");
-    }
-    if (xhr.readyState === 4 && xhr.status >= 400) {
-      console.error('ERROR: ' + xhr.status + ': ' + xhr.responseText);
-    }
+			getPokemon();
+			console.log("Pokemon deleted");
+			alert("Pokemon deleted");
+		}
+		if (xhr.readyState === 4 && xhr.status >= 400) {
+			console.error('ERROR: ' + xhr.status + ': ' + xhr.responseText);
+		}
 
-  };
+	};
 
-  xhr.send();
+	xhr.send();
 
-  document.pokemonForm.reset();
+	document.pokemonForm.reset();
 
 }

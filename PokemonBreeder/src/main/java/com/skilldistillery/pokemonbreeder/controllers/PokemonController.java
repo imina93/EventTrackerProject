@@ -66,9 +66,9 @@ public class PokemonController {
 	
 	
 	@PutMapping("pokemon/{id}")
-	public Optional<Pokemon> updatePokemon(
+	public Pokemon updatePokemon(
 			@PathVariable Integer id,
-			@RequestBody Optional<Pokemon> pokemon,
+			@RequestBody Pokemon pokemon,
 			HttpServletResponse res) {
 		try {
 			pokemon = pokemonSvc.updatePokemon(id, pokemon);

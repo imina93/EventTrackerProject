@@ -10,7 +10,7 @@ public interface PokemonService {
 	List<Pokemon> getAllPokemon();
 	Pokemon addPokemon(Pokemon pokemon);
 	void deletePokemon (int id);
-	Optional<Pokemon> updatePokemon(int pokemonId, Optional<Pokemon> pokemon);
+	Pokemon updatePokemon(int pokemonId, Pokemon pokemon);
 	Optional<Pokemon> findById(Integer id);
 
 }

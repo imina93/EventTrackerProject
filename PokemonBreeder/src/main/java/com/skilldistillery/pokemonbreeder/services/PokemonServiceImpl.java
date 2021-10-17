@@ -32,12 +32,22 @@ public class PokemonServiceImpl implements PokemonService {
 	}
 	
 	@Override
-	public Optional<Pokemon> updatePokemon(int pokemonId, Optional<Pokemon> pokemon) {
+	public Pokemon updatePokemon(int pokemonId, Pokemon pokemon) {
 		Optional<Pokemon> ownedPokemon = pokemonRepo.findById(pokemonId);
-		if (ownedPokemon != null) {
-			ownedPokemon = pokemon;
-		}
-		return ownedPokemon;
+		if (ownedPokemon.get() != null) {
+			Pokemon savedPokemon = ownedPokemon.get();
+			savedPokemon.setAbility(pokemon.getAbility());
+			savedPokemon.setIvSpread(pokemon.getIvSpread());
+			savedPokemon.setTrainer(pokemon.getTrainer());
+			savedPokemon.setName(pokemon.getName());
+			savedPokemon.setNotes(pokemon.getNotes());
+			savedPokemon.setNature(pokemon.getNature());
+			savedPokemon = pokemonRepo.saveAndFlush(savedPokemon);
+			
+			return savedPokemon;
+			
+			}
+		return null;
 	}
 	
 	@Override
